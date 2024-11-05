@@ -1,13 +1,10 @@
 package com.example.lifelog.service;
 
-import com.example.lifelog.domain.Location;
 import com.example.lifelog.domain.User;
 import com.example.lifelog.dto.*;
-import com.example.lifelog.repository.LocationRepository;
 import com.example.lifelog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

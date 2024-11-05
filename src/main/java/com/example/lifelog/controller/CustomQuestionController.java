@@ -7,6 +7,7 @@ import com.example.lifelog.dto.UserRequestDto;
 import com.example.lifelog.dto.UserResponseDto;
 import com.example.lifelog.service.CustomQuestionService;
 import com.example.lifelog.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.sql.SQLException;
 @RestController
 @RequestMapping("/api/custom-questions")
 @RequiredArgsConstructor
+@Tag(name = "CustomQuestion", description = "CustomQuestion API")
 public class CustomQuestionController {
 
     private final CustomQuestionService customQuestionService;

@@ -7,6 +7,7 @@ import com.example.lifelog.dto.QuestionOptionRequestDto;
 import com.example.lifelog.dto.QuestionOptionResponseDto;
 import com.example.lifelog.service.CustomQuestionService;
 import com.example.lifelog.service.QuestionOptionService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.sql.SQLException;
 @RestController
 @RequestMapping("/api/question-options")
 @RequiredArgsConstructor
+@Tag(name = "QuestionOption", description = "QuestionOption API")
 public class QuestionOptionController {
 
     private final QuestionOptionService questionOptionService;
