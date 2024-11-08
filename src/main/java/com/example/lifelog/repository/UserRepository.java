@@ -1,6 +1,5 @@
 package com.example.lifelog.repository;
 
-import com.example.lifelog.domain.Location;
 import com.example.lifelog.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

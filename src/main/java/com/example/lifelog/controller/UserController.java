@@ -1,7 +1,5 @@
 package com.example.lifelog.controller;
 
-
-import com.example.lifelog.domain.Location;
 import com.example.lifelog.domain.User;
 import com.example.lifelog.dto.*;
 import com.example.lifelog.service.UserService;

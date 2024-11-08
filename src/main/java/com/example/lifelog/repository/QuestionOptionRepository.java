@@ -18,7 +18,7 @@ public class QuestionOptionRepository {
     private final DataSource dataSource;
 
     public QuestionOption save(QuestionOption questionOption) throws SQLException {
-        String sql = "INSERT INTO question_option (question_id, option_text) VALUES (?, ?)";
+        String sql = "INSERT INTO question_options (question_id, option_text) VALUES (?, ?)";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -44,7 +44,7 @@ public class QuestionOptionRepository {
     }
 
     public QuestionOption findById(Long id) throws SQLException {
-        String sql = "SELECT option_id, question_id, option_text FROM question_option WHERE option_id = ?";
+        String sql = "SELECT option_id, question_id, option_text FROM question_options WHERE option_id = ?";
 
         QuestionOption questionOption = null;
 
@@ -68,7 +68,7 @@ public class QuestionOptionRepository {
     }
 
     public QuestionOption updateQuestionOption(Long id, QuestionOption questionOption) throws SQLException {
-        String updateSql = "UPDATE question_option SET option_text = ? WHERE option_id = ?";
+        String updateSql = "UPDATE question_options SET option_text = ? WHERE option_id = ?";
 
         try (Connection conn = dataSource.getConnection()) {
             // Execute the update query
@@ -82,7 +82,7 @@ public class QuestionOptionRepository {
                 }
             }
 
-            String selectSql = "SELECT question_id, option_text FROM question_option WHERE option_id = ?";
+            String selectSql = "SELECT question_id, option_text FROM question_options WHERE option_id = ?";
 
             // Execute the select query to retrieve the updated record
             try (PreparedStatement selectPstmt = conn.prepareStatement(selectSql)) {
@@ -107,7 +107,7 @@ public class QuestionOptionRepository {
     }
 
     public void deleteQuestionOption(Long id) throws SQLException {
-        String sql = "DELETE FROM question_option WHERE option_id = ?";
+        String sql = "DELETE FROM question_options WHERE option_id = ?";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
