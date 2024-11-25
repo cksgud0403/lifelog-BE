@@ -162,5 +162,34 @@ public class DiaryEntryRepository {
 
         return diaryEntries;
     }
+
+    public List<DiaryEntry> findByYearAndMonth(int year, int month) throws SQLException {
+        String sql = "SELECT entry_id, user_id, date, content, emotion_score " +
+                "FROM diary_entry " +
+                "WHERE YEAR(date) = ? AND MONTH(date) = ?";
+        List<DiaryEntry> diaryEntries = new ArrayList<>();
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, year);
+            pstmt.setInt(2, month);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    DiaryEntry diaryEntry = DiaryEntry.builder()
+                            .entry_id(rs.getLong("entry_id"))
+                            .user_id(rs.getLong("user_id"))
+                            .date(rs.getDate("date").toLocalDate())
+                            .content(rs.getString("content"))
+                            .emotion_score(rs.getString("emotion_score"))
+                            .build();
+                    diaryEntries.add(diaryEntry);
+                }
+            }
+        }
+
+        return diaryEntries;
+    }
+
 }
 
