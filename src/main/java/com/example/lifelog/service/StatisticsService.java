@@ -23,6 +23,15 @@ public class StatisticsService {
         // 데이터 필터링
         List<DiaryEntry> filteredEntries = diaryEntryRepository.findByYearAndMonth(year, month);
 
+        // 데이터가 없을 경우 0% 반환
+        if (filteredEntries.isEmpty()) {
+            Map<String, String> emptyStatistics = new LinkedHashMap<>();
+            for (int i = 1; i <= 5; i++) {
+                emptyStatistics.put(String.valueOf(i), "0%");
+            }
+            return emptyStatistics;
+        }
+
         // 감정 점수 배열 초기화 (0~5)
         int[] emotionScoreCounts = new int[6];
         int totalEntries = filteredEntries.size();
@@ -38,7 +47,7 @@ public class StatisticsService {
         int totalPercentage = 0;
 
         for (int i = 1; i <= 5; i++) { // 1부터 5까지 퍼센트 계산
-            double percentage = totalEntries == 0 ? 0 : ((double) emotionScoreCounts[i] / totalEntries) * 100;
+            double percentage = ((double) emotionScoreCounts[i] / totalEntries) * 100;
             percentages[i] = (int) Math.floor(percentage); // 소수점 제거
             totalPercentage += percentages[i]; // 합계 계산
         }
@@ -74,6 +83,7 @@ public class StatisticsService {
         }
     }
 }
+
 
 
 
