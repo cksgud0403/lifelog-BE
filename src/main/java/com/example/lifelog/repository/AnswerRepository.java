@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -85,6 +87,29 @@ public class AnswerRepository {
             pstmt.setLong(1, id);
             pstmt.executeUpdate();
         }
+    }
+
+    public List<Answer> findByEntryId(Long entryId) throws SQLException {
+        String sql = "SELECT * FROM answer WHERE entry_id = ?";
+        List<Answer> answers = new ArrayList<>();
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, entryId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Answer answer = Answer.builder()
+                            .answer_id(rs.getLong("answer_id"))
+                            .entry_id(rs.getLong("entry_id"))
+                            .question_id(rs.getLong("question_id"))
+                            .answer_text(rs.getString("answer_text"))
+                            .answer_at(rs.getTimestamp("answer_at").toLocalDateTime())
+                            .build();
+                    answers.add(answer);
+                }
+            }
+        }
+        return answers;
     }
 }
 

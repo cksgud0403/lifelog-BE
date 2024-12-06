@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/answers")
@@ -25,12 +26,12 @@ public class AnswerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AnswerResponseDto.AnswerDetailDto> getAnswer(@PathVariable Long id) throws SQLException {
+    public ResponseEntity<AnswerResponseDto.AnswerDetailDto> getAnswer(@PathVariable("id") Long id) throws SQLException {
         return new ResponseEntity<>(answerService.getAnswer(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AnswerResponseDto.AnswerDetailDto> updateAnswer(@PathVariable Long id, @RequestBody AnswerRequestDto.UpdateAnswerDto updateAnswerDto) throws SQLException {
+    public ResponseEntity<AnswerResponseDto.AnswerDetailDto> updateAnswer(@PathVariable("id") Long id, @RequestBody AnswerRequestDto.UpdateAnswerDto updateAnswerDto) throws SQLException {
         AnswerResponseDto.AnswerDetailDto updatedAnswer = answerService.updateAnswer(id, updateAnswerDto);
         return ResponseEntity.ok(updatedAnswer);
     }
@@ -39,6 +40,12 @@ public class AnswerController {
     public ResponseEntity<Void> deleteAnswer(@PathVariable Long id) throws SQLException {
         answerService.deleteAnswer(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/entry/{entryId}")
+    public ResponseEntity<List<AnswerResponseDto.AnswerDetailDto>> getAnswersByEntryId(@PathVariable("entryId") Long entryId) throws SQLException {
+        List<AnswerResponseDto.AnswerDetailDto> answers = answerService.getAnswersByEntryId(entryId);
+        return new ResponseEntity<>(answers, HttpStatus.OK);
     }
 }
 

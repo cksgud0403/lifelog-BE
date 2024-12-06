@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +19,7 @@ import java.util.NoSuchElementException;
 public class AnswerService {
 
     private final AnswerRepository answerRepository;
+    private final CustomQuestionService customQuestionService;
 
     @Transactional
     public AnswerResponseDto.AnswerDetailDto createAnswer(AnswerRequestDto.CreateAnswerDto createAnswerDto) throws SQLException {
@@ -71,5 +74,27 @@ public class AnswerService {
     @Transactional
     public void deleteAnswer(Long id) throws SQLException {
         answerRepository.deleteById(id);
+    }
+
+    public List<AnswerResponseDto.AnswerDetailDto> getAnswersByEntryId(Long entryId) throws SQLException {
+        List<Answer> answers = answerRepository.findByEntryId(entryId);
+        return answers.stream()
+                .map(answer -> {
+                    String questionText;
+                    try {
+                        questionText = customQuestionService.getCustomQuestion(answer.getQuestion_id()).getQuestion_text();
+                    } catch (SQLException e) {
+                        questionText = "Question not found";
+                    }
+                    return AnswerResponseDto.AnswerDetailDto.builder()
+                            .answer_id(answer.getAnswer_id())
+                            .entry_id(answer.getEntry_id())
+                            .question_id(answer.getQuestion_id())
+                            .question_text(questionText)
+                            .answer_text(answer.getAnswer_text())
+                            .answer_at(answer.getAnswer_at())
+                            .build();
+                })
+                .collect(Collectors.toList());
     }
 }
