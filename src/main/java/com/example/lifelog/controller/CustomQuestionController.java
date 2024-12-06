@@ -3,9 +3,11 @@ package com.example.lifelog.controller;
 
 import com.example.lifelog.dto.CustomQuestionRequestDto;
 import com.example.lifelog.dto.CustomQuestionResponseDto;
+import com.example.lifelog.dto.QuestionWithOptionsDto;
 import com.example.lifelog.dto.UserRequestDto;
 import com.example.lifelog.dto.UserResponseDto;
 import com.example.lifelog.service.CustomQuestionService;
+import com.example.lifelog.service.QuestionOptionService;
 import com.example.lifelog.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/custom-questions")
@@ -22,18 +25,11 @@ import java.sql.SQLException;
 public class CustomQuestionController {
 
     private final CustomQuestionService customQuestionService;
+    private final QuestionOptionService questionOptionService;
 
     @GetMapping("/{id}")
     public ResponseEntity<CustomQuestionResponseDto.CustomQuestionDetailDto> getCustomQuestion(@PathVariable("id") Long id) throws SQLException {
         return new ResponseEntity<>(customQuestionService.getCustomQuestion(id), HttpStatus.OK);
-    }
-
-    /**
-     * 특정 유저의 질문 목록 조회.
-     */
-    @GetMapping("/user/{id}")
-    public ResponseEntity<CustomQuestionResponseDto.CustomQuestionsByUserDto> getCustomQuestionsByUserId(@PathVariable("id") Long id) throws SQLException {
-        return new ResponseEntity<>(customQuestionService.getCustomQuestionsByUserId(id), HttpStatus.OK);
     }
 
     @PostMapping
@@ -51,4 +47,22 @@ public class CustomQuestionController {
         customQuestionService.removeCustomQuestion(id);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * 특정 유저의 질문 목록 조회.
+     */
+    @GetMapping("/user/{id}")
+    public ResponseEntity<CustomQuestionResponseDto.CustomQuestionsByUserDto> getCustomQuestionsByUserId(@PathVariable("id") Long id) throws SQLException {
+        return new ResponseEntity<>(customQuestionService.getCustomQuestionsByUserId(id), HttpStatus.OK);
+    }
+
+    /**
+     * 질문과 옵션을 동시에 처리하는 API.
+     */
+    @PostMapping("/bulk")
+    public ResponseEntity<Void> saveQuestionsWithOptions(@RequestBody List<QuestionWithOptionsDto> questions) throws SQLException {
+        customQuestionService.saveQuestionsWithOptions(questions);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
 }

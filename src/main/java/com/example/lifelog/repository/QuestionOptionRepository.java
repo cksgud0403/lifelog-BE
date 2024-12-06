@@ -120,4 +120,14 @@ public class QuestionOptionRepository {
             }
         }
     }
+
+    public void deleteByQuestionId(Long questionId) throws SQLException {
+        String sql = "DELETE FROM question_option WHERE question_id = ?";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, questionId);
+            pstmt.executeUpdate();
+        }
+    }
 }

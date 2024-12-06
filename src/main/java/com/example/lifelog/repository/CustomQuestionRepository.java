@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -66,20 +67,18 @@ public class CustomQuestionRepository {
         return question;
     }
 
-    public CustomQuestion findById(Long id) throws SQLException {
-        String sql = "SELECT question_text, question_type FROM custom_question WHERE question_id = ?";
-
+    public Optional<CustomQuestion> findById(Long id) throws SQLException {
+        String sql = "SELECT * FROM custom_question WHERE question_id = ?";
         CustomQuestion customQuestion = null;
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
             pstmt.setLong(1, id);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-
                     customQuestion = CustomQuestion.builder()
+                            .question_id(rs.getLong("question_id"))
                             .question_text(rs.getString("question_text"))
                             .question_type(rs.getString("question_type"))
                             .build();
@@ -87,7 +86,7 @@ public class CustomQuestionRepository {
             }
         }
 
-        return customQuestion;
+        return Optional.ofNullable(customQuestion);
     }
 
     public CustomQuestion updateCustomQuestion(Long id, CustomQuestion customQuestion) throws SQLException {
@@ -149,7 +148,7 @@ public class CustomQuestionRepository {
     }
 
     public List<CustomQuestion> findByUserId(Long userId) throws SQLException {
-        String sql = "SELECT * FROM custom_question WHERE user_id = ?";
+        String sql = "SELECT * FROM custom_question WHERE user_id = ? ORDER BY order_index ASC";
         List<CustomQuestion> questions = new ArrayList<>();
 
         try (Connection conn = dataSource.getConnection();
