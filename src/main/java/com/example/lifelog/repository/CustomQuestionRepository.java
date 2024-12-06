@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Repository
@@ -144,5 +146,30 @@ public class CustomQuestionRepository {
                 throw new NoSuchElementException("No CustomQuestion found with id: " + id); // 삭제할 레코드가 없을 경우 예외 발생
             }
         }
+    }
+
+    public List<CustomQuestion> findByUserId(Long userId) throws SQLException {
+        String sql = "SELECT * FROM custom_question WHERE user_id = ?";
+        List<CustomQuestion> questions = new ArrayList<>();
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setLong(1, userId);
+            
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    questions.add(CustomQuestion.builder()
+                        .question_id(rs.getLong("question_id"))
+                        .user_id(rs.getLong("user_id"))
+                        .question_text(rs.getString("question_text"))
+                        .question_type(rs.getString("question_type"))
+                        .created_at(rs.getTimestamp("created_at").toLocalDateTime())
+                        .updated_at(rs.getTimestamp("updated_at").toLocalDateTime())
+                        .build());
+                }
+            }
+        }
+        return questions;
     }
 }

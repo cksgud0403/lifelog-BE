@@ -21,7 +21,7 @@ public class DiaryEntryController {
     private final DiaryEntryService diaryEntryService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<DiaryEntryResponseDto.DiaryEntryDetailDto> getDiaryEntry(@PathVariable Long id) throws SQLException {
+    public ResponseEntity<DiaryEntryResponseDto.DiaryEntryDetailDto> getDiaryEntry(@PathVariable("id") Long id) throws SQLException {
         return new ResponseEntity<>(diaryEntryService.getDiaryEntry(id), HttpStatus.OK);
     }
 
@@ -36,12 +36,12 @@ public class DiaryEntryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DiaryEntryResponseDto.UpdateDiaryEntryResultDto> modifyDiaryEntry(@PathVariable Long id, @RequestBody DiaryEntryRequestDto.UpdateDiaryEntryDto updateDiaryEntryDto) throws SQLException {
+    public ResponseEntity<DiaryEntryResponseDto.UpdateDiaryEntryResultDto> modifyDiaryEntry(@PathVariable("id") Long id, @RequestBody DiaryEntryRequestDto.UpdateDiaryEntryDto updateDiaryEntryDto) throws SQLException {
         return new ResponseEntity<>(diaryEntryService.modifyDiaryEntry(id, updateDiaryEntryDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeDiaryEntry(@PathVariable Long id) throws SQLException {
+    public ResponseEntity<Void> removeDiaryEntry(@PathVariable("id") Long id) throws SQLException {
         diaryEntryService.removeDiaryEntry(id);
         return ResponseEntity.noContent().build();
     }

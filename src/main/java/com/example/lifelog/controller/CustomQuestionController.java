@@ -24,8 +24,16 @@ public class CustomQuestionController {
     private final CustomQuestionService customQuestionService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomQuestionResponseDto.CustomQuestionDetailDto> getCustomQuestion(@PathVariable Long id) throws SQLException {
+    public ResponseEntity<CustomQuestionResponseDto.CustomQuestionDetailDto> getCustomQuestion(@PathVariable("id") Long id) throws SQLException {
         return new ResponseEntity<>(customQuestionService.getCustomQuestion(id), HttpStatus.OK);
+    }
+
+    /**
+     * 특정 유저의 질문 목록 조회.
+     */
+    @GetMapping("/user/{id}")
+    public ResponseEntity<CustomQuestionResponseDto.CustomQuestionsByUserDto> getCustomQuestionsByUserId(@PathVariable("id") Long id) throws SQLException {
+        return new ResponseEntity<>(customQuestionService.getCustomQuestionsByUserId(id), HttpStatus.OK);
     }
 
     @PostMapping
@@ -34,12 +42,12 @@ public class CustomQuestionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomQuestionResponseDto.updateCustomQuestionResultDto> modifyCustomQuestion(@PathVariable Long id, @RequestBody CustomQuestionRequestDto.updateCustomQuestionDto customQuestionDto) throws SQLException {
+    public ResponseEntity<CustomQuestionResponseDto.updateCustomQuestionResultDto> modifyCustomQuestion(@PathVariable("id") Long id, @RequestBody CustomQuestionRequestDto.updateCustomQuestionDto customQuestionDto) throws SQLException {
         return new ResponseEntity<>(customQuestionService.modifyCustomQuestion(id, customQuestionDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeCustomQuestion(@PathVariable Long id) throws SQLException {
+    public ResponseEntity<Void> removeCustomQuestion(@PathVariable("id") Long id) throws SQLException {
         customQuestionService.removeCustomQuestion(id);
         return ResponseEntity.noContent().build();
     }

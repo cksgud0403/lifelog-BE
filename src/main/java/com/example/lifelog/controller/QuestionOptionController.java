@@ -24,7 +24,7 @@ public class QuestionOptionController {
     private final QuestionOptionService questionOptionService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<QuestionOptionResponseDto.QuestionOptionDetailDto> getQuestionOption(@PathVariable Long id) throws SQLException {
+    public ResponseEntity<QuestionOptionResponseDto.QuestionOptionDetailDto> getQuestionOption(@PathVariable("id") Long id) throws SQLException {
         return new ResponseEntity<>(questionOptionService.getQuestionOption(id), HttpStatus.OK);
     }
 
@@ -34,12 +34,12 @@ public class QuestionOptionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<QuestionOptionResponseDto.updateQuestionOptionResultDto> modifyQuestionOption(@PathVariable Long id, @RequestBody QuestionOptionRequestDto.updateQuestionOptionDto updateQuestionOptionDto) throws SQLException {
+    public ResponseEntity<QuestionOptionResponseDto.updateQuestionOptionResultDto> modifyQuestionOption(@PathVariable("id") Long id, @RequestBody QuestionOptionRequestDto.updateQuestionOptionDto updateQuestionOptionDto) throws SQLException {
         return new ResponseEntity<>(questionOptionService.modifyQuestionOption(id, updateQuestionOptionDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeQuestionOption(@PathVariable Long id) throws SQLException {
+    public ResponseEntity<Void> removeQuestionOption(@PathVariable("id") Long id) throws SQLException {
         questionOptionService.removeCustomQuestion(id);
         return ResponseEntity.noContent().build();
     }

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -78,5 +80,23 @@ public class CustomQuestionService {
     @Transactional
     public void removeCustomQuestion(Long id) throws SQLException {
         customQuestionRepository.deleteCustomQuestion(id);
+    }
+
+    public CustomQuestionResponseDto.CustomQuestionsByUserDto getCustomQuestionsByUserId(Long userId) throws SQLException {
+        List<CustomQuestion> questions = customQuestionRepository.findByUserId(userId);
+        
+        List<CustomQuestionResponseDto.CustomQuestionListDto> questionDtos = questions.stream()
+            .map(q -> CustomQuestionResponseDto.CustomQuestionListDto.builder()
+                .id(q.getQuestion_id())
+                .question(q.getQuestion_text())
+                .description(q.getQuestion_type())
+                .createdAt(q.getCreated_at())
+                .updatedAt(q.getUpdated_at())
+                .build())
+            .collect(Collectors.toList());
+
+        return CustomQuestionResponseDto.CustomQuestionsByUserDto.builder()
+            .questions(questionDtos)
+            .build();
     }
 }

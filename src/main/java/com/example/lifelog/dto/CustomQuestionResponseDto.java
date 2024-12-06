@@ -3,8 +3,11 @@ package com.example.lifelog.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class CustomQuestionResponseDto {
 
@@ -36,5 +39,27 @@ public class CustomQuestionResponseDto {
         String question_text;
         String question_type;
         LocalDateTime updated_at;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CustomQuestionListDto {
+        private Long id;
+        private String question;
+        private String description;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CustomQuestionsByUserDto {
+        private List<CustomQuestionListDto> questions;
     }
 }
