@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -44,5 +45,21 @@ public class DiaryEntryController {
     public ResponseEntity<Void> removeDiaryEntry(@PathVariable("id") Long id) throws SQLException {
         diaryEntryService.removeDiaryEntry(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * 유저 아이디와 날짜를 기준으로 일기 조회
+     * @param userId 유저 아이디
+     * @param date 날짜
+     * @return 일기 상세 정보
+     * @throws SQLException
+     */
+    @GetMapping("/user/{userId}/date")
+    public ResponseEntity<DiaryEntryResponseDto.DiaryEntryDetailDto> getDiaryEntryByUserAndDate(
+            @PathVariable("userId") Long userId,
+            @RequestParam("date") String date) throws SQLException {
+        LocalDate parsedDate = LocalDate.parse(date);
+        DiaryEntryResponseDto.DiaryEntryDetailDto entry = diaryEntryService.getDiaryEntryByUserAndDate(userId, parsedDate);
+        return new ResponseEntity<>(entry, HttpStatus.OK);
     }
 }

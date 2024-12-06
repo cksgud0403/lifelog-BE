@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -189,6 +190,39 @@ public class DiaryEntryRepository {
         }
 
         return diaryEntries;
+    }
+
+    /**
+     * 유저 아이디와 날짜를 기준으로 일기 조회
+     * @param userId 유저 아이디
+     * @param date 날짜
+     * @return 일기 상세 정보
+     * @throws SQLException
+     */
+    public DiaryEntry findByUserIdAndDate(Long userId, LocalDate date) throws SQLException {
+        String sql = "SELECT entry_id, user_id, date, content, emotion_score FROM diary_entry WHERE user_id = ? AND date = ?";
+        
+        DiaryEntry diaryEntry = null;
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, userId);
+            pstmt.setDate(2, Date.valueOf(date));
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    diaryEntry = DiaryEntry.builder()
+                            .entry_id(rs.getLong("entry_id"))
+                            .user_id(rs.getLong("user_id"))
+                            .date(rs.getDate("date").toLocalDate())
+                            .content(rs.getString("content"))
+                            .emotion_score(rs.getString("emotion_score"))
+                            .build();
+                }
+            }
+        }
+
+        return diaryEntry;
     }
 
 }

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -87,5 +89,21 @@ public class DiaryEntryService {
                         .emotion_score(entry.getEmotion_score())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public DiaryEntryResponseDto.DiaryEntryDetailDto getDiaryEntryByUserAndDate(Long userId, LocalDate date) throws SQLException {
+        DiaryEntry diaryEntry = diaryEntryRepository.findByUserIdAndDate(userId, date);
+        
+        if (diaryEntry == null) {
+            throw new NoSuchElementException("No DiaryEntry found for userId: " + userId + " on date: " + date);
+        }
+
+        return DiaryEntryResponseDto.DiaryEntryDetailDto.builder()
+                .entry_id(diaryEntry.getEntry_id())
+                .user_id(diaryEntry.getUser_id())
+                .date(diaryEntry.getDate())
+                .content(diaryEntry.getContent())
+                .emotion_score(diaryEntry.getEmotion_score())
+                .build();
     }
 }
