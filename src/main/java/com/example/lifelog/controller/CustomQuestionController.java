@@ -4,11 +4,7 @@ package com.example.lifelog.controller;
 import com.example.lifelog.dto.CustomQuestionRequestDto;
 import com.example.lifelog.dto.CustomQuestionResponseDto;
 import com.example.lifelog.dto.QuestionWithOptionsDto;
-import com.example.lifelog.dto.UserRequestDto;
-import com.example.lifelog.dto.UserResponseDto;
 import com.example.lifelog.service.CustomQuestionService;
-import com.example.lifelog.service.QuestionOptionService;
-import com.example.lifelog.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +21,6 @@ import java.util.List;
 public class CustomQuestionController {
 
     private final CustomQuestionService customQuestionService;
-    private final QuestionOptionService questionOptionService;
 
     @GetMapping("/{id}")
     public ResponseEntity<CustomQuestionResponseDto.CustomQuestionDetailDto> getCustomQuestion(@PathVariable("id") Long id) throws SQLException {

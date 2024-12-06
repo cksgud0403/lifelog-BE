@@ -1,12 +1,8 @@
 package com.example.lifelog.service;
 
-import com.example.lifelog.domain.CustomQuestion;
 import com.example.lifelog.domain.QuestionOption;
-import com.example.lifelog.dto.CustomQuestionRequestDto;
-import com.example.lifelog.dto.CustomQuestionResponseDto;
 import com.example.lifelog.dto.QuestionOptionRequestDto;
 import com.example.lifelog.dto.QuestionOptionResponseDto;
-import com.example.lifelog.repository.CustomQuestionRepository;
 import com.example.lifelog.repository.QuestionOptionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

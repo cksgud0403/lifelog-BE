@@ -1,11 +1,8 @@
 package com.example.lifelog.controller;
 
 
-import com.example.lifelog.dto.CustomQuestionRequestDto;
-import com.example.lifelog.dto.CustomQuestionResponseDto;
 import com.example.lifelog.dto.QuestionOptionRequestDto;
 import com.example.lifelog.dto.QuestionOptionResponseDto;
-import com.example.lifelog.service.CustomQuestionService;
 import com.example.lifelog.service.QuestionOptionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

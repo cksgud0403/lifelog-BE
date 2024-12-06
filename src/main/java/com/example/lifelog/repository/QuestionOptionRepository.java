@@ -1,6 +1,5 @@
 package com.example.lifelog.repository;
 
-import com.example.lifelog.domain.CustomQuestion;
 import com.example.lifelog.domain.QuestionOption;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
 @Repository
