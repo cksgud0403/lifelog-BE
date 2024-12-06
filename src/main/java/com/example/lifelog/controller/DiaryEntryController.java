@@ -61,6 +61,10 @@ public class DiaryEntryController {
             @RequestParam("date") String date) throws SQLException {
         LocalDate parsedDate = LocalDate.parse(date);
         DiaryEntryResponseDto.DiaryEntryDetailDto entry = diaryEntryService.getDiaryEntryByUserAndDate(userId, parsedDate);
+        
+        if (entry == null) {
+            return ResponseEntity.noContent().build();
+        }
         return new ResponseEntity<>(entry, HttpStatus.OK);
     }
 

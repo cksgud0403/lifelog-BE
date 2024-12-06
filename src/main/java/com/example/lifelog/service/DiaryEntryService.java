@@ -95,7 +95,7 @@ public class DiaryEntryService {
         DiaryEntry diaryEntry = diaryEntryRepository.findByUserIdAndDate(userId, date);
         
         if (diaryEntry == null) {
-            throw new NoSuchElementException("No DiaryEntry found for userId: " + userId + " on date: " + date);
+            return null;
         }
 
         return DiaryEntryResponseDto.DiaryEntryDetailDto.builder()
