@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/diary-entry")
@@ -61,5 +62,11 @@ public class DiaryEntryController {
         LocalDate parsedDate = LocalDate.parse(date);
         DiaryEntryResponseDto.DiaryEntryDetailDto entry = diaryEntryService.getDiaryEntryByUserAndDate(userId, parsedDate);
         return new ResponseEntity<>(entry, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> handleNoSuchElementException(NoSuchElementException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }
