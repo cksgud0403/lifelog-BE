@@ -22,9 +22,9 @@ public class StatisticsController {
 
     @GetMapping
     public ResponseEntity<Map<String, String>> getStatistics(
-            @RequestParam int year,
-            @RequestParam int month,
-            @RequestParam String type
+            @RequestParam("year") int year,
+            @RequestParam("month") int month,
+            @RequestParam("type") String type
     ) {
         try {
             if (type.equalsIgnoreCase("emotion")) {
